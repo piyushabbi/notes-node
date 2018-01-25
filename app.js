@@ -8,17 +8,29 @@ const argv = yargs.argv;
 
 const command = argv._[0];
 switch (command) {
-  case 'add':
-    notes.addNote(argv.title, argv.body);
+  case 'add': {
+    const note = notes.addNote(argv.title, argv.body);
+    note
+      ? console.log('Note Created!')
+      : console.log('Note Already present!');
     break;
-  case 'list':
-    notes.getAll();
+  }
+  case 'read': {
+    const note = notes.getNote(argv.title);
+    if (note.length == 0) {
+      console.log('No Notes Added!');
+    } else {
+      console.log('Note Title: ', note[0].title);
+      console.log('Note Body: ', note[0].body);
+    }
     break;
-  case 'read':
-    notes.getNote(argv.title);
+  }
+  case 'remove': {
+    const isNoteRemoved = notes.removeNote(argv.title);
+    isNoteRemoved
+      ? console.log(`Note ${argv.title} removed!`)
+      : console.log('Note did not remove!');
     break;
-  case 'remove':
-    notes.removeNote(argv.title);
-    break;
+  }
   default: console.log('Command not recognized!');
 }
